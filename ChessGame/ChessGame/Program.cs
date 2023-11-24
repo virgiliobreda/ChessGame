@@ -9,8 +9,7 @@ namespace ChessGame
 
             BoardChess board = new BoardChess(8, 8); 
 
-            Position p = new Position(3, 4);
-            Console.WriteLine($"Position: {p}");
+            Display.PrintDisplay(board);
 
 
         }

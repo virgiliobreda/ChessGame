@@ -19,5 +19,10 @@ namespace ChessGame.Board
             Columns = column;
             Pieces = new Piece[Rows, Columns];
         }
+
+        public Piece Piece(int row, int column)
+        {
+            return Pieces[row, column];
+        }
     }
 }
