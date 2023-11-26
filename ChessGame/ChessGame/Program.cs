@@ -7,14 +7,21 @@ namespace ChessGame
     {
         static void Main(string[] args)
         {
+            try
+            {
+                BoardChess board = new BoardChess(8, 8);
 
-            BoardChess board = new BoardChess(8, 8);
+                board.PlacePiece(new Tower(board, Color.Blue), new Position(0, 0));
+                board.PlacePiece(new Tower(board, Color.Blue), new Position(1, 9));
+                board.PlacePiece(new King(board, Color.Blue), new Position(2, 2));
 
-            board.PlacePart(new Tower(board, Color.Blue), new Position(0, 0));
-            board.PlacePart(new Tower(board, Color.Blue), new Position(1, 3));
-            board.PlacePart(new King(board, Color.Blue), new Position(2, 4));
+                Display.PrintDisplay(board);
+            }
 
-            Display.PrintDisplay(board);
+            catch (BoardException ex) 
+            {
+                Console.WriteLine(ex.Message);
+            }
 
 
         }
