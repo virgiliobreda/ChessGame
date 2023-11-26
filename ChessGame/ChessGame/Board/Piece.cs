@@ -13,9 +13,9 @@ namespace ChessGame.Board
         public int AmountMovements { get; protected set; }
         public BoardChess Board { get; protected set; }
 
-        public Piece(Position position, Color color, BoardChess board)
+        public Piece(Color color, BoardChess board)
         {
-            Position = position;
+            Position = null;
             Color = color;
             AmountMovements = 0;
             Board = board;
