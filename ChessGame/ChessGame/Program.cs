@@ -7,11 +7,25 @@ namespace ChessGame
     {
         static void Main(string[] args)
         {
-            PositionChess position = new PositionChess('c', 7);
+            try
+            {
+                BoardChess board = new BoardChess(8, 8);
 
-            Console.WriteLine(position);
+                board.PlacePiece(new Tower(board, Color.Black), new Position(0, 0));
+                board.PlacePiece(new Tower(board, Color.Black), new Position(1, 3));
+                board.PlacePiece(new King(board, Color.Black), new Position(2, 2));
 
-            Console.WriteLine(position.ToPosition());
+                board.PlacePiece(new Tower(board, Color.White), new Position(3, 5));
+
+
+                Display.PrintDisplay(board);
+            }
+
+            catch (BoardException ex) 
+            {
+                Console.WriteLine(ex.Message);
+            }
+
 
         }
     }
