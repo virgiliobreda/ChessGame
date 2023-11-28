@@ -17,6 +17,12 @@ namespace ChessGame.Board
             Column = column;
         }
 
+        public void SetValues(int row, int column)
+        {
+            Row = row;
+            Column = column;
+        }
+
         public override string ToString()
         {
             return $"{Row}, {Column}" ;
