@@ -1,6 +1,7 @@
 ﻿using ChessGame.Board;
 using ChessGame.Chess;
 
+
 namespace ChessGame
 {
     internal class Program
@@ -9,16 +10,27 @@ namespace ChessGame
         {
             try
             {
-                BoardChess board = new BoardChess(8, 8);
+                ChessMatch chessMatch = new ChessMatch();
 
-                board.PlacePiece(new Tower(board, Color.Black), new Position(0, 0));
-                board.PlacePiece(new Tower(board, Color.Black), new Position(1, 3));
-                board.PlacePiece(new King(board, Color.Black), new Position(2, 2));
+                while (!chessMatch.FinishedMatch)
+                {
+                    Console.Clear();
+                    Display.PrintDisplay(chessMatch.Board);
 
-                board.PlacePiece(new Tower(board, Color.White), new Position(3, 5));
+                    Console.WriteLine();
+
+                    Console.Write("Origin: ");
+                    Position origin = Display.ReadPosition().ToPosition();
+
+                    Console.Write("Target: ");
+                    Position target = Display.ReadPosition().ToPosition(); 
+
+                    chessMatch.ExecuteMovement(origin, target);
+                }
+                
 
 
-                Display.PrintDisplay(board);
+                Display.PrintDisplay(chessMatch.Board);
             }
 
             catch (BoardException ex) 

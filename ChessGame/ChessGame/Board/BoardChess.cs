@@ -48,6 +48,18 @@ namespace ChessGame.Board
             p.Position = pos;
         }
 
+        public Piece RemovePiece(Position position)
+        {
+            if (Piece(position) == null) 
+            {
+                return null;
+            }
+            Piece sup = Piece(position);
+            sup.Position = null;
+            Pieces[position.Row, position.Column] = null;
+            return sup;
+        }
+
         public bool ValidPosition(Position position)
         {
             if (position.Row < 0 || position.Row >= Rows || position.Column < 0 || position.Column >= Columns)

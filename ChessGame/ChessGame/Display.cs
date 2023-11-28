@@ -1,7 +1,9 @@
 ﻿using ChessGame.Board;
+using ChessGame.Chess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,7 +33,14 @@ namespace ChessGame
             }
             Console.WriteLine("  a b c d e f g h");
         }
-
+        
+        public static PositionChess ReadPosition()
+        {
+            string s = Console.ReadLine();
+            char column = s[0];
+            int row = int.Parse(s[1] + "");
+            return new PositionChess(column, row);
+        }
         public static void PrintPiece(Piece piece)
         {
             if (piece.Color == Color.White)
@@ -47,6 +56,7 @@ namespace ChessGame
                 Console.ForegroundColor = sup;
 
             }
+
         }
     }
 
