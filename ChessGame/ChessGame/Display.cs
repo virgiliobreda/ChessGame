@@ -11,6 +11,41 @@ namespace ChessGame
 {
     class Display
     {
+        public static void PrintMatch(ChessMatch chessMatch)
+        {
+            PrintDisplay(chessMatch.Board);
+            Console.WriteLine();
+            PrintCapturedPieces(chessMatch);
+            Console.WriteLine();
+            Console.WriteLine("Turn: " + chessMatch.Turn);
+            Console.WriteLine("Waiting for a move: " + chessMatch.CurrentPlayer);
+            
+        }
+
+        public static void PrintCapturedPieces(ChessMatch chessMatch)
+        {
+            Console.WriteLine("Captured Pieces:");
+            Console.Write("White: ");
+            PrintSet(chessMatch.CapturedColorPieces(Color.White));
+            Console.WriteLine();
+            Console.Write("Black: ");
+            ConsoleColor aux = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            PrintSet(chessMatch.CapturedColorPieces(Color.Black));
+            Console.ForegroundColor = aux;
+            Console.WriteLine();
+        }
+
+        public static void PrintSet(HashSet<Piece> setPieces)
+        {
+            Console.Write("[");
+            foreach (Piece p in setPieces)
+            {
+                Console.Write(p + " ");
+            }
+            Console.Write("]");
+
+        }
         public static void PrintDisplay(BoardChess board)
         {
             for (int i = 0; i < board.Rows; i++)

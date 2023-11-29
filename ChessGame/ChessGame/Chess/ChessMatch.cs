@@ -12,7 +12,9 @@ namespace ChessGame.Chess
         public BoardChess Board { get; private set; }
         public int Turn { get; private set; }
         public Color CurrentPlayer { get; set; }
-        public bool FinishedMatch { get; private set; } 
+        public bool FinishedMatch { get; private set; }
+        private HashSet<Piece> Parts;
+        private HashSet<Piece> CapturedParts;
 
         public ChessMatch()
         {
@@ -20,6 +22,8 @@ namespace ChessGame.Chess
             Turn = 1;
             CurrentPlayer = Color.White;
             FinishedMatch = false;
+            Parts = new HashSet<Piece>();
+            CapturedParts = new HashSet<Piece>();
             PlacePiece();
         }
 
@@ -29,6 +33,11 @@ namespace ChessGame.Chess
             p.IncrementMovement();
             Piece capturedPiece = Board.RemovePiece(targetPosition);
             Board.PlacePiece(p, targetPosition);
+
+            if (capturedPiece != null)
+            {
+                CapturedParts.Add(capturedPiece);
+            }
 
         }
 
@@ -80,22 +89,56 @@ namespace ChessGame.Chess
         }
 
 
+
+        public HashSet<Piece> CapturedColorPieces(Color color)
+        {
+            HashSet<Piece> aux = new HashSet<Piece>();
+            foreach (Piece x in CapturedParts)
+            {
+                if (x.Color == color)
+                {
+                    aux.Add(x);
+                }
+            }
+            return aux; 
+        }
+
+
+        public HashSet<Piece> PiecesInGame(Color color)
+        {
+            HashSet<Piece> aux = new HashSet<Piece>();
+            foreach (Piece x in Parts)
+            {
+                if (x.Color == color)
+                {
+                    aux.Add(x);
+                }
+            }
+            aux.ExceptWith(CapturedColorPieces(color));
+            return aux;
+        }
+
+        public void PlaceNewPiece(char column, int row, Piece piece) 
+        {
+            Board.PlacePiece(piece, new PositionChess(column, row).ToPosition());
+            Parts.Add(piece);
+        }
+        
         private void PlacePiece()
         {
-            Board.PlacePiece(new Tower(Board, Color.White), new PositionChess('c', 1).ToPosition());
-            Board.PlacePiece(new Tower(Board, Color.White), new PositionChess('c', 2).ToPosition());
-            Board.PlacePiece(new Tower(Board, Color.White), new PositionChess('d', 2).ToPosition());
-            Board.PlacePiece(new Tower(Board, Color.White), new PositionChess('e', 2).ToPosition());
-            Board.PlacePiece(new Tower(Board, Color.White), new PositionChess('e', 1).ToPosition());
-            Board.PlacePiece(new King(Board, Color.White), new PositionChess('d', 1).ToPosition());
+            PlaceNewPiece('c', 1, new Tower(Board, Color.White));
+            PlaceNewPiece('c', 2, new Tower(Board, Color.White));
+            PlaceNewPiece('d', 2, new Tower(Board, Color.White));
+            PlaceNewPiece('e', 1, new Tower(Board, Color.White));
+            PlaceNewPiece('e', 2, new Tower(Board, Color.White));
+            PlaceNewPiece('d', 1, new King(Board, Color.White));
 
-            Board.PlacePiece(new Tower(Board, Color.Black), new PositionChess('c', 7).ToPosition());
-            Board.PlacePiece(new Tower(Board, Color.Black), new PositionChess('c', 8).ToPosition());
-            Board.PlacePiece(new Tower(Board, Color.Black), new PositionChess('d', 7).ToPosition());
-            Board.PlacePiece(new Tower(Board, Color.Black), new PositionChess('e', 7).ToPosition());
-            Board.PlacePiece(new Tower(Board, Color.Black), new PositionChess('e', 8).ToPosition());
-            Board.PlacePiece(new King(Board, Color.Black), new PositionChess('d', 8).ToPosition());
-
+            PlaceNewPiece('c', 7, new Tower(Board, Color.Black));
+            PlaceNewPiece('c', 8, new Tower(Board, Color.Black));
+            PlaceNewPiece('d', 7, new Tower(Board, Color.Black));
+            PlaceNewPiece('e', 7, new Tower(Board, Color.Black));
+            PlaceNewPiece('e', 8, new Tower(Board, Color.Black));
+            PlaceNewPiece('d', 8, new King(Board, Color.Black));
         }
     }
 }

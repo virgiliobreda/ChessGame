@@ -18,11 +18,8 @@ namespace ChessGame
                     try
                     {
                         Console.Clear();
-                        Display.PrintDisplay(chessMatch.Board);
-
-                        Console.WriteLine();
-                        Console.WriteLine("Turn: " + chessMatch.Turn);
-                        Console.WriteLine("Waiting for a move: " + chessMatch.CurrentPlayer);
+                        
+                        Display.PrintMatch(chessMatch);
 
                         Console.Write("Origin: ");
                         Position origin = Display.ReadPosition().ToPosition();
