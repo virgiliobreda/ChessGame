@@ -21,6 +21,7 @@ namespace ChessGame
                         
                         Display.PrintMatch(chessMatch);
 
+                        Console.WriteLine();
                         Console.Write("Origin: ");
                         Position origin = Display.ReadPosition().ToPosition();
                         chessMatch.ValidateOriginPosition(origin);
@@ -46,7 +47,7 @@ namespace ChessGame
                     }
                 }
                 Console.Clear();
-                Display.PrintDisplay(chessMatch.Board);
+                Display.PrintMatch(chessMatch);
             }
             catch (BoardException ex)
             {
