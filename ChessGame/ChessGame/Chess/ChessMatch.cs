@@ -32,6 +32,54 @@ namespace ChessGame.Chess
 
         }
 
+        public void MakesPlay(Position originPosition, Position targetPosition)
+        {   
+            ExecuteMovement(originPosition, targetPosition);
+            Turn++;
+            PlayerSwap();
+        }
+
+        public void ValidateOriginPosition(Position position)
+        {
+            if (Board.Piece(position) == null)
+            {
+                throw new BoardException("There is no part in the chosen origin position");
+            }
+            
+            if (CurrentPlayer != Board.Piece(position).Color)
+            {
+                throw new BoardException("The original piece you choose is not yours");
+            }
+
+            if (!Board.Piece(position).AreTherePossibleMoviments())
+            {
+                throw new BoardException("There are no possible movements for the original piece");
+            }
+            
+        }
+
+        public void ValidateTargetPosition(Position origin, Position target) 
+        {
+            if (!Board.Piece(origin).CanMove(target))
+            {
+                throw new BoardException("Target position invalid");
+            }
+        }
+
+
+        private void PlayerSwap()
+        {
+            if (CurrentPlayer == Color.White)
+            {
+                CurrentPlayer = Color.Black;
+            }
+            else
+            {
+                CurrentPlayer = Color.White;
+            }
+        }
+
+
         private void PlacePiece()
         {
             Board.PlacePiece(new Tower(Board, Color.White), new PositionChess('c', 1).ToPosition());
