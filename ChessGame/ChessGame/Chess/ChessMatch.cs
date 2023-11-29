@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,19 +16,21 @@ namespace ChessGame.Chess
         public bool FinishedMatch { get; private set; }
         private HashSet<Piece> Parts;
         private HashSet<Piece> CapturedParts;
+        public bool Check { get; private set; }
 
         public ChessMatch()
         {
-            Board = new BoardChess(8,8);
+            Board = new BoardChess(8, 8);
             Turn = 1;
             CurrentPlayer = Color.White;
             FinishedMatch = false;
+            Check = false;
             Parts = new HashSet<Piece>();
             CapturedParts = new HashSet<Piece>();
             PlacePiece();
         }
 
-        public void ExecuteMovement(Position originPosition, Position targetPosition)
+        public Piece ExecuteMovement(Position originPosition, Position targetPosition)
         {
             Piece p = Board.RemovePiece(originPosition);
             p.IncrementMovement();
@@ -39,11 +42,43 @@ namespace ChessGame.Chess
                 CapturedParts.Add(capturedPiece);
             }
 
+            return capturedPiece;
+        }
+
+        public void UndoMovement(Position originPosition, Position targetPosition, Piece capturedPiece)
+        {
+            Piece p = Board.RemovePiece(targetPosition);
+            p.DescrementMovement();
+
+            if (capturedPiece != null)
+            {
+                Board.PlacePiece(capturedPiece, targetPosition);
+                CapturedParts.Remove(capturedPiece);
+            }
+            Board.PlacePiece(p, originPosition);
         }
 
         public void MakesPlay(Position originPosition, Position targetPosition)
-        {   
-            ExecuteMovement(originPosition, targetPosition);
+        {
+            Piece capturedPiece = ExecuteMovement(originPosition, targetPosition);
+
+            if (IsInCheckMate(CurrentPlayer))
+            {
+                UndoMovement(originPosition, targetPosition, capturedPiece);
+                throw new BoardException("You can't put yourself in checkmate ");
+            }
+
+            Piece p = Board.Piece(targetPosition);
+
+            if (IsInCheckMate(Opponent(CurrentPlayer)))
+            {
+                Check = true;
+            }
+            else
+            {
+                Check = false;
+            }
+
             Turn++;
             PlayerSwap();
         }
@@ -54,7 +89,7 @@ namespace ChessGame.Chess
             {
                 throw new BoardException("There is no part in the chosen origin position");
             }
-            
+
             if (CurrentPlayer != Board.Piece(position).Color)
             {
                 throw new BoardException("The original piece you choose is not yours");
@@ -64,10 +99,10 @@ namespace ChessGame.Chess
             {
                 throw new BoardException("There are no possible movements for the original piece");
             }
-            
+
         }
 
-        public void ValidateTargetPosition(Position origin, Position target) 
+        public void ValidateTargetPosition(Position origin, Position target)
         {
             if (!Board.Piece(origin).CanMove(target))
             {
@@ -100,7 +135,7 @@ namespace ChessGame.Chess
                     aux.Add(x);
                 }
             }
-            return aux; 
+            return aux;
         }
 
 
@@ -118,12 +153,57 @@ namespace ChessGame.Chess
             return aux;
         }
 
-        public void PlaceNewPiece(char column, int row, Piece piece) 
+        private Color Opponent(Color color)
+        {
+            if (color == Color.White)
+            {
+                return Color.Black;
+            }
+
+            else
+            {
+                return Color.White;
+            }
+        }
+
+        private Piece KingCheck(Color color)
+        {
+            foreach (Piece piece in PiecesInGame(color))
+            {
+                if (piece is King)
+                {
+                    return piece;
+                }
+            }
+            return null;
+        }
+
+        public bool IsInCheckMate(Color cor)
+        {
+            Piece kingPiece = KingCheck(cor);
+            if (kingPiece == null)
+            {
+                throw new BoardException("Não tem rei da cor " + cor + " no tabuleiro!");
+            }
+            foreach (Piece x in PiecesInGame(Opponent(cor)))
+            {
+                bool[,] mat = x.PossibleMoviments();
+                if (mat[kingPiece.Position.Row, kingPiece.Position.Column])
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+
+        public void PlaceNewPiece(char column, int row, Piece piece)
         {
             Board.PlacePiece(piece, new PositionChess(column, row).ToPosition());
             Parts.Add(piece);
         }
-        
+
         private void PlacePiece()
         {
             PlaceNewPiece('c', 1, new Tower(Board, Color.White));

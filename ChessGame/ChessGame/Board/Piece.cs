@@ -26,6 +26,11 @@ namespace ChessGame.Board
             AmountMovements++;
         }
 
+        public void DescrementMovement()
+        {
+            AmountMovements--;
+        }
+
         public bool AreTherePossibleMoviments()
         {
             bool[,] mat = PossibleMoviments();
