@@ -42,6 +42,32 @@ namespace ChessGame.Chess
                 CapturedParts.Add(capturedPiece);
             }
 
+
+            // Castling
+            if (p is King && targetPosition.Column == originPosition.Column + 2)
+            {
+                Position originTower = new Position(originPosition.Row, originPosition.Column + 3);
+                Position targetTower = new Position(originPosition.Row, originPosition.Column + 1);
+
+                Piece T = Board.RemovePiece(originTower);
+                T.IncrementMovement();
+                Board.PlacePiece(T, targetTower);
+            }
+
+            if (p is King && targetPosition.Column == originPosition.Column - 2)
+            {
+                Position originTower = new Position(originPosition.Row, originPosition.Column - 4);
+                Position targetTower = new Position(originPosition.Row, originPosition.Column - 1);
+
+                Piece T = Board.RemovePiece(originTower);
+                T.IncrementMovement();
+                Board.PlacePiece(T, targetTower);
+            }
+
+
+
+
+
             return capturedPiece;
         }
 
@@ -56,6 +82,30 @@ namespace ChessGame.Chess
                 CapturedParts.Remove(capturedPiece);
             }
             Board.PlacePiece(p, originPosition);
+
+
+            // Castling
+
+            if (p is King && targetPosition.Column == originPosition.Column + 2)
+            {
+                Position originTower = new Position(originPosition.Row, originPosition.Column + 3);
+                Position targetTower = new Position(originPosition.Row, originPosition.Column + 1);
+
+                Piece T = Board.RemovePiece(targetTower);
+                T.DescrementMovement();
+                Board.PlacePiece(T, originTower);
+            }
+
+
+            if (p is King && targetPosition.Column == originPosition.Column - 2)
+            {
+                Position originTower = new Position(originPosition.Row, originPosition.Column - 4);
+                Position targetTower = new Position(originPosition.Row, originPosition.Column - 1);
+
+                Piece T = Board.RemovePiece(targetTower);
+                T.DescrementMovement();
+                Board.PlacePiece(T, originTower);
+            }
         }
 
         public void MakesPlay(Position originPosition, Position targetPosition)
@@ -249,7 +299,7 @@ namespace ChessGame.Chess
             PlaceNewPiece('b', 1, new Horse(Board, Color.White));
             PlaceNewPiece('c', 1, new Bishop(Board, Color.White));
             PlaceNewPiece('d', 1, new Queen(Board, Color.White));
-            PlaceNewPiece('e', 1, new King(Board, Color.White));
+            PlaceNewPiece('e', 1, new King(Board, Color.White, this));
             PlaceNewPiece('f', 1, new Bishop(Board, Color.White));
             PlaceNewPiece('g', 1, new Horse(Board, Color.White));
             PlaceNewPiece('h', 1, new Tower(Board, Color.White));
@@ -267,7 +317,7 @@ namespace ChessGame.Chess
             PlaceNewPiece('b', 8, new Horse(Board, Color.Black));
             PlaceNewPiece('c', 8, new Bishop(Board, Color.Black));
             PlaceNewPiece('d', 8, new Queen(Board, Color.Black));
-            PlaceNewPiece('e', 8, new King(Board, Color.Black));
+            PlaceNewPiece('e', 8, new King(Board, Color.Black, this));
             PlaceNewPiece('f', 8, new Bishop(Board, Color.Black));
             PlaceNewPiece('g', 8, new Horse(Board, Color.Black));
             PlaceNewPiece('h', 8, new Tower(Board, Color.Black));

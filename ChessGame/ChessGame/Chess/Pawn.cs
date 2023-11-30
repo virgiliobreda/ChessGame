@@ -10,11 +10,11 @@ namespace ChessGame.Chess
 {
     internal class Pawn : Piece
     {
-        private ChessMatch Partida;
+        private ChessMatch TheChessMatch;
 
         public Pawn(BoardChess tab, Color cor, ChessMatch partida) : base(cor, tab)
         {
-            Partida = partida;
+            TheChessMatch = partida;
         }
 
         public override string ToString()
