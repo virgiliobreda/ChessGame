@@ -253,14 +253,14 @@ namespace ChessGame.Chess
             PlaceNewPiece('f', 1, new Bishop(Board, Color.White));
             PlaceNewPiece('g', 1, new Horse(Board, Color.White));
             PlaceNewPiece('h', 1, new Tower(Board, Color.White));
-            PlaceNewPiece('a', 2, new Pawn(Board, Color.White));
-            PlaceNewPiece('b', 2, new Pawn(Board, Color.White));
-            PlaceNewPiece('c', 2, new Pawn(Board, Color.White));
-            PlaceNewPiece('d', 2, new Pawn(Board, Color.White));
-            PlaceNewPiece('e', 2, new Pawn(Board, Color.White));
-            PlaceNewPiece('f', 2, new Pawn(Board, Color.White));
-            PlaceNewPiece('g', 2, new Pawn(Board, Color.White));
-            PlaceNewPiece('h', 2, new Pawn(Board, Color.White));
+            PlaceNewPiece('a', 2, new Pawn(Board, Color.White, this));
+            PlaceNewPiece('b', 2, new Pawn(Board, Color.White, this));
+            PlaceNewPiece('c', 2, new Pawn(Board, Color.White, this));
+            PlaceNewPiece('d', 2, new Pawn(Board, Color.White, this));
+            PlaceNewPiece('e', 2, new Pawn(Board, Color.White, this));
+            PlaceNewPiece('f', 2, new Pawn(Board, Color.White, this));
+            PlaceNewPiece('g', 2, new Pawn(Board, Color.White, this));
+            PlaceNewPiece('h', 2, new Pawn(Board, Color.White, this));
 
 
             PlaceNewPiece('a', 8, new Tower(Board, Color.Black));
@@ -271,17 +271,14 @@ namespace ChessGame.Chess
             PlaceNewPiece('f', 8, new Bishop(Board, Color.Black));
             PlaceNewPiece('g', 8, new Horse(Board, Color.Black));
             PlaceNewPiece('h', 8, new Tower(Board, Color.Black));
-            PlaceNewPiece('a', 7, new Pawn(Board, Color.Black));
-            PlaceNewPiece('b', 7, new Pawn(Board, Color.Black));
-            PlaceNewPiece('c', 7, new Pawn(Board, Color.Black));
-            PlaceNewPiece('d', 7, new Pawn(Board, Color.Black));
-            PlaceNewPiece('e', 7, new Pawn(Board, Color.Black));
-            PlaceNewPiece('f', 7, new Pawn(Board, Color.Black));
-            PlaceNewPiece('g', 7, new Pawn(Board, Color.Black));
-            PlaceNewPiece('h', 7, new Pawn(Board, Color.Black));
-
-
-
+            PlaceNewPiece('a', 7, new Pawn(Board, Color.Black, this));
+            PlaceNewPiece('b', 7, new Pawn(Board, Color.Black, this));
+            PlaceNewPiece('c', 7, new Pawn(Board, Color.Black, this));
+            PlaceNewPiece('d', 7, new Pawn(Board, Color.Black, this));
+            PlaceNewPiece('e', 7, new Pawn(Board, Color.Black, this));
+            PlaceNewPiece('f', 7, new Pawn(Board, Color.Black, this));
+            PlaceNewPiece('g', 7, new Pawn(Board, Color.Black, this));
+            PlaceNewPiece('h', 7, new Pawn(Board, Color.Black, this));
 
         }
     }
