@@ -16,6 +16,7 @@ namespace ChessGame.Chess
         public bool FinishedMatch { get; private set; }
         private HashSet<Piece> Parts;
         private HashSet<Piece> CapturedParts;
+        public Piece VunerablePieceEnPassant { get; private set; }
         public bool Check { get; private set; }
 
         public ChessMatch()
@@ -25,6 +26,7 @@ namespace ChessGame.Chess
             CurrentPlayer = Color.White;
             FinishedMatch = false;
             Check = false;
+            VunerablePieceEnPassant = null;
             Parts = new HashSet<Piece>();
             CapturedParts = new HashSet<Piece>();
             PlacePiece();
@@ -64,6 +66,27 @@ namespace ChessGame.Chess
                 Board.PlacePiece(T, targetTower);
             }
 
+
+            // En Passant
+
+            if (p is Pawn)
+            {
+                if (originPosition.Column != targetPosition.Column && capturedPiece == null)
+                {
+                    Position posP;
+                    if (p.Color == Color.White)
+                    {
+                        posP = new Position(targetPosition.Row + 1, targetPosition.Column);
+                    }
+                    else
+                    {
+                        posP = new Position(targetPosition.Row - 1, targetPosition.Column);
+                    }
+
+                    capturedPiece = Board.RemovePiece(posP);
+                    CapturedParts.Add(capturedPiece);
+                }
+            }
 
 
 
@@ -106,6 +129,26 @@ namespace ChessGame.Chess
                 T.DescrementMovement();
                 Board.PlacePiece(T, originTower);
             }
+
+            // En Passant
+            if (p is Pawn)
+            {
+                if (originPosition.Column != targetPosition.Column && capturedPiece == VunerablePieceEnPassant)
+                {
+                    Piece pawn = Board.RemovePiece(targetPosition);
+                    Position posP;
+                    if (p.Color == Color.White)
+                    {
+                        posP = new Position(3, targetPosition.Column);
+                    }
+                    else
+                    {
+                        posP = new Position(4, targetPosition.Column);
+                    }
+
+                    Board.PlacePiece(pawn, posP);
+                }
+            }
         }
 
         public void MakesPlay(Position originPosition, Position targetPosition)
@@ -137,6 +180,17 @@ namespace ChessGame.Chess
             {
                 Turn++;
                 PlayerSwap();
+            }
+
+            // En Passant
+
+            if (p is Pawn && (targetPosition.Row == originPosition.Row -2 || targetPosition.Row == originPosition.Row + 2))
+            {
+                VunerablePieceEnPassant = p;
+            }
+            else
+            {
+                VunerablePieceEnPassant = null;
             }
             
         }

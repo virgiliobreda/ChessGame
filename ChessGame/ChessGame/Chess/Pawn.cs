@@ -12,9 +12,9 @@ namespace ChessGame.Chess
     {
         private ChessMatch TheChessMatch;
 
-        public Pawn(BoardChess tab, Color cor, ChessMatch partida) : base(cor, tab)
+        public Pawn(BoardChess tab, Color cor, ChessMatch chessMatch) : base(cor, tab)
         {
-            TheChessMatch = partida;
+            TheChessMatch = chessMatch;
         }
 
         public override string ToString()
@@ -62,6 +62,24 @@ namespace ChessGame.Chess
                     mat[pos.Row, pos.Row] = true;
                 }
 
+                // En passant
+                
+                if (Position.Row == 3)
+                {
+                    Position leftPosition = new Position(Position.Row, Position.Column -1 );
+                    
+                    if (Board.ValidPosition(leftPosition) && ThereEnemy(leftPosition) && Board.Piece(leftPosition) == TheChessMatch.VunerablePieceEnPassant){
+                        mat[leftPosition.Row - 1, leftPosition.Column] = true;
+                    }
+
+                    Position rightPosition = new Position(Position.Row, Position.Column + 1);
+
+                    if (Board.ValidPosition(rightPosition) && ThereEnemy(rightPosition) && Board.Piece(rightPosition) == TheChessMatch.VunerablePieceEnPassant)
+                    {
+                        mat[rightPosition.Row - 1, rightPosition.Column] = true;
+                    }
+                }
+
                 
             }
             else
@@ -88,7 +106,25 @@ namespace ChessGame.Chess
                     mat[pos.Row, pos.Column] = true;
                 }
 
-                
+                // En passant
+
+                if (Position.Row == 4)
+                {
+                    Position leftPosition = new Position(Position.Row, Position.Column - 1);
+
+                    if (Board.ValidPosition(leftPosition) && ThereEnemy(leftPosition) && Board.Piece(leftPosition) == TheChessMatch.VunerablePieceEnPassant)
+                    {
+                        mat[leftPosition.Row + 1, leftPosition.Column] = true;
+                    }
+
+                    Position rightPosition = new Position(Position.Row, Position.Column + 1);
+
+                    if (Board.ValidPosition(rightPosition) && ThereEnemy(rightPosition) && Board.Piece(rightPosition) == TheChessMatch.VunerablePieceEnPassant)
+                    {
+                        mat[rightPosition.Row + 1, rightPosition.Column] = true;
+                    }
+                }
+
             }
 
             return mat;
